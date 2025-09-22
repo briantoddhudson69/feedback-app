@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Customer Feedback</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="logo-integration.css" rel="stylesheet"/>
+<style>
+   :root {
+        --primary-color: #1e3a8a;
+        --secondary-color: #60a5fa;
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+        --danger-color: #ef4444;
+        --light-bg: #f8fafc;
+        --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    body {
+        background: linear-gradient(135deg, #0f1c4d 0%, #1e3a8a 100%);
+        min-height: 100vh;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        margin: 0;
+        padding: 20px 0;
+    }
+    .container-fluid { max-width: 1400px; margin: 0 auto; }
+    .card {
+        background: white; border-radius: 16px; box-shadow: var(--card-shadow);
+        transition: all 0.3s ease; margin-bottom: 24px; overflow: hidden;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25); }
+    .card-header {
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        color: white; padding: 20px 24px; font-weight: 600; font-size: 1.1rem; cursor: pointer;
+        display: flex; justify-content: space-between; align-items: center; transition: background 0.3s ease;
+    }
+    .card-header:hover { background: linear-gradient(45deg, #0f1c4d, #1e3a8a); }
+    .card-body { padding: 24px; background: #f8f9fa; }
+    .form-control, .form-select {
+        border-radius: 8px; border: 2px solid #e2e8f0; padding: 12px 15px; transition: all 0.3s ease;
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+    }
+    .form-label { font-weight: 600; color: #374151; margin-bottom: 8px; }
+    .required-asterisk { color: var(--danger-color); font-weight: bold; }
+    .btn-primary { background: var(--primary-color); color: white; transition: background 0.3s ease, transform 0.2s ease; }
+    .btn-primary:hover { background: #0f1c4d; transform: translateY(-1px); }
+    .stars { display: flex; justify-content: center; font-size: 2.5rem; margin-bottom: 1rem; user-select: none; }
+    .star { color: lightgray; cursor: pointer; transition: color 0.2s ease; padding: 0 5px; }
+    .star.selected { color: gold; }
+    @media (max-width: 768px) { .container-fluid { padding: 10px; } .card { margin-bottom: 16px; } }
+    .collapse-icon { transition: transform 0.3s ease; font-size: 14px; }
+    .collapsed .collapse-icon { transform: rotate(-90deg); }
+</style>
+</head>
+<body>
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-body" style="background: white;">
+      <div class="d-flex align-items-center">
+        <img alt="DesignCo Logo" src="designco_logo.PNG" style="height: 60px; width: auto; border-radius: 8px; margin-right: 20px;"/>
+        <div><h2 class="mb-1" style="color: var(--primary-color);">Customer Feedback</h2></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Absolute URL: avoids any redirects messing with the POST -->
+  <form action="https://brianh498.sg-host.com/feedback/submit.php" id="questionnaire-form" method="POST">
+    <div class="card">
+      <div class="card-header" data-bs-target="#basic-info" data-bs-toggle="collapse">
+        <span>How did we do?</span>
+        <span class="collapse-icon">▼</span>
+      </div>
+      <div class="collapse show" id="basic-info">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label" for="job_name">Salesperson Name</label>
+                <input class="form-control" id="job_name" name="job_name" required type="hidden" value=""/>
+                <select class="form-select" id="salesperson" name="salesperson">
+                  <option value="">-- Select --</option>
+                  <option value="Jeremy">Jeremy</option>
+                  <option value="Tina">Tina</option>
+                  <option value="Carlos">Carlos</option>
+                  <option value="Meghan">Meghan</option>
+                  <option value="Lulu">Lulu</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label" for="customer_name">Customer Name <span class="required-asterisk">*</span></label>
+                <input class="form-control" id="customer_name" name="customer_name" required type="text"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label" for="customer_email">Customer Email <span class="required-asterisk">*</span></label>
+                <input class="form-control" id="customer_email" name="customer_email" type="email"/>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label" for="customer_phone">Customer Phone <span class="required-asterisk">*</span></label>
+                <input class="form-control" id="customer_phone" name="customer_phone" type="tel"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="stars mb-3" id="starRating">
+            <span class="star" data-val="1">★</span>
+            <span class="star" data-val="2">★</span>
+            <span class="star" data-val="3">★</span>
+            <span class="star" data-val="4">★</span>
+            <span class="star" data-val="5">★</span>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="comments">Comments (max 5000 characters)</label>
+            <textarea class="form-control" id="comments" maxlength="5000" name="comments" placeholder="Type your feedback here..." rows="3" spellcheck="true"></textarea>
+          </div>
+
+          <button class="btn btn-primary btn-lg mt-3" type="submit">Send</button>
+        </div>
+      </div>
+    </div>
+    <input id="rating" name="rating" type="hidden" value=""/>
+  </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const stars = document.querySelectorAll('.star');
+  const ratingInput = document.getElementById('rating');
+  stars.forEach((star, index) => {
+    star.addEventListener('click', () => {
+      const rating = index + 1;
+      ratingInput.value = rating;
+      stars.forEach((s, i) => s.classList.toggle('selected', i < rating));
+    });
+  });
+  const urlParams = new URLSearchParams(window.location.search);
+  const rep = urlParams.get('rep');
+  if (rep) {
+    const dropdown = document.getElementById('salesperson');
+    if (dropdown) dropdown.value = rep;
+  }
+});
+</script>
+</body>
+</html>
